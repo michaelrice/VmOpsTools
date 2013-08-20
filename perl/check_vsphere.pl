@@ -5,6 +5,7 @@
 #
 use warnings;
 use strict;
+use lib "/usr/lib64/nagios/plugins";
 use utils qw(%ERRORS);
 
 BEGIN { $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME} = 0 }
