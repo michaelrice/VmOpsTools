@@ -118,3 +118,8 @@ log4j = {
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.toastcoders.VmOpsTools.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.toastcoders.VmOpsTools.UserRole'
 grails.plugins.springsecurity.authority.className = 'com.toastcoders.VmOpsTools.Role'
+
+vcenter {
+    admin_user = "myuser"
+    admin_pass = "secure_password"
+}
