@@ -21,6 +21,13 @@
         <datasource-map />
       </configuration>
     </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$USER_HOME$/.grails/2.1.1/projects/VmOpsTools/plugins/jaxrs-0.6/src/groovy/org/grails/jaxrs/itest/integrationTestEnvironment.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />

@@ -17,6 +17,7 @@ import java.lang.annotation.Annotation
  * JaxRS message writer supporting hash maps.
  *
  * @author Bud Byrd
+ * @web http://budjb.com/2012/02/24/jax-rs-and-hashmaps/
  */
 @Provider
 @Produces(['text/xml', 'application/xml', 'text/json', 'application/json'])
