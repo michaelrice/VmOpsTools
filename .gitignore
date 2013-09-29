@@ -1,6 +1,6 @@
 # ignore file to help keep class files and other binary
 # file out of the repo
-
+.idea/
 *.iws
 *Db.properties
 *Db.script
