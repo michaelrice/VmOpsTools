@@ -59,6 +59,7 @@ class Client {
         }
         def context = SCH.servletContext.getAttribute(GA.APPLICATION_CONTEXT)
         grailsApplication = context.grailsApplication
+        // gives us access to the stanza in Config.groovy for the vcenter admin user and password
         String vcuser = grailsApplication.config.vcenter.admin_user
         String vcpass = grailsApplication.config.vcenter.admin_pass
         Client(vcuser,vcpass,vcenter.ip)
