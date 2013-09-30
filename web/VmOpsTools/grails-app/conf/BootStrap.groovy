@@ -28,7 +28,6 @@ class BootStrap {
            adminUser.save(flush: true)
            UserRole.create adminUser, adminRole, true
         }
-        println env
         if(env == 'development') {
             def vcenter = Vcenter.findAll() ?: new Vcenter(name: "vs00-winutil.home.lab",uuid: generateUuid(),hostName: "vs00-winutil.home.lab",ip: "10.12.254.53").save(flush: true)
             def customer = Customer.findAll() ?: new Customer(name: "Mr. Errr LLC").save(flush: true)

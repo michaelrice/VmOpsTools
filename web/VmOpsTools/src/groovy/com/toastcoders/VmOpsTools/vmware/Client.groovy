@@ -62,15 +62,18 @@ class Client {
         // gives us access to the stanza in Config.groovy for the vcenter admin user and password
         String vcuser = grailsApplication.config.vcenter.admin_user
         String vcpass = grailsApplication.config.vcenter.admin_pass
-        Client(vcuser,vcpass,vcenter.ip)
+        setSi(new ServiceInstance(new URL("https://${vcenter.ip.toString()}/sdk"), vcuser, vcpass, true))
+        log.trace("Created ServiceInstance to vCenter ${vcenter.ip.toString()} for ${deviceId}")
+        setRootFolder(getSi().getRootFolder())
+        log.trace("Set RootFolder for ${deviceId}")
     }
 
     public Client(String username, String password, String vcip) {
         // connect to the vcenter using provided username and password and return service instance
         setSi(new ServiceInstance(new URL("https://${vcip}/sdk"), username, password, true))
-        log.trace("Created ServiceInstance to vCenter ${vcip} for ${deviceId}")
+        log.trace("Created ServiceInstance to vCenter ${vcip}")
         setRootFolder(getSi().getRootFolder())
-        log.trace("Set RootFolder for ${deviceId}")
+        log.trace("Set RootFolder")
     }
 
     ServiceInstance getSi() {
