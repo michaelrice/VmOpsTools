@@ -77,4 +77,42 @@ class VcenterActionsService {
         }
         return retList
     }
+
+    /**
+     * Reboots a virtual machine given its device number
+     * @param deviceid
+     */
+    def rebootVirtualMachine(def deviceid) {
+        VirtualMachine vm = getVmByDeviceId(deviceid)
+        vm.rebootGuest()
+    }
+
+    /**
+     * PowerOn a virtual machine given its device number
+     * @param deviceId
+     * @return
+     */
+    def powerOnVirtualMachine(def deviceId) {
+        VirtualMachine vm = getVmByDeviceId(deviceId)
+        final task = vm.powerOnVM_Task(vm.getRuntime().getHost() as HostSystem)
+        task.waitForTask()
+    }
+
+    /**
+     * Method to return a VirtualMachine object given a device id
+     * @param deviceId
+     * @return
+     */
+    private VirtualMachine getVmByDeviceId(String deviceId) {
+        Client vsclient = new Client(deviceid)
+        Device device = Device.findById(Long.decode(deviceId))
+        if(!device) {
+            // need to bail here since no device was found
+        }
+        if(!(device instanceof com.toastcoders.VmOpsTools.Virtualmachine)) {
+            // what ever it is, its not a vm. need to bail here.
+        }
+        VirtualMachine vm = vsclient.si.getSearchIndex().findByUuid(null,device.uuid,true)
+        return vm
+    }
 }
