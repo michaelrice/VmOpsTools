@@ -94,6 +94,6 @@ grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.toastcode
 grails.plugins.springsecurity.authority.className = 'com.toastcoders.VmOpsTools.Role'
 
 vcenter {
-    admin_user = "myuser"
-    admin_pass = "secure_password"
+    admin_user = "home\\vcauto"
+    admin_pass = "2haxucUdaqe5"
 }

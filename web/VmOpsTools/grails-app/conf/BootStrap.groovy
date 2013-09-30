@@ -30,19 +30,17 @@ class BootStrap {
         }
         println env
         if(env == 'development') {
-            println "running development mode"
-            def vcenter = Vcenter.findAll() ?: new Vcenter(name: "vs00.mrice.me",uuid: generateUuid(),hostName: "vs00.mrice.me",ip: "10.12.254.10").save(flush: true)
-            println vcenter
+            def vcenter = Vcenter.findAll() ?: new Vcenter(name: "vs00-winutil.home.lab",uuid: generateUuid(),hostName: "vs00-winutil.home.lab",ip: "10.12.254.53").save(flush: true)
             def customer = Customer.findAll() ?: new Customer(name: "Mr. Errr LLC").save(flush: true)
             def account = Account.findAll() ?: new Account(name: "DFW Account", customer: customer).save(flush: true)
             def host = Hostsystem.findAll() ?: new Hostsystem(ram: 512,cpu: 12, storageSpace: 120,
                     vcenter: vcenter,
                     account: account,
-                    name: "host1.mrice.me",
+                    name: "1000-hyp1.home.lab",
                     uuid: generateUuid(),
-                    ip: "10.10.10.10",
-                    hostName: "host1.mrice.me").save(flush: true)
-            def vm1 = Virtualmachine.findAll() ?: new Virtualmachine(ram:2,cpu: 3,storageSpace: 30,
+                    ip: "10.12.254.30",
+                    hostName: "hyp1.home.lab").save(flush: true)
+            def vm1 = Virtualmachine.findAll() ?: new Virtualmachine(ram:2,cpu: 1,storageSpace: 20,
                     vcenter:vcenter,
                     account:account,
                     name: "web1.mrice.me",
@@ -56,14 +54,14 @@ class BootStrap {
             def vm2 = new Virtualmachine(ram:2,cpu: 3,storageSpace: 30,
                     vcenter:vcenter,
                     account:account,
-                    name: "web2.mrice.me",
-                    uuid: generateUuid(),
+                    name: "1002-ubuntu-test.home.lab",
+                    uuid: "421559d9-0ac3-2211-1b3b-b8e1c62dcee8",
                     hostsystem: host,
                     ip: "192.168.1.11",
-                    hostName: "web2.mrice.me",
+                    hostName: "1002-ubuntu-test.home.lab",
                     storageType: "SAN",
-                    os: "CentOS",
-                    osVersion: "6.4").save(flush: true)
+                    os: "Ubuntu",
+                    osVersion: "10").save(flush: true)
             def vm3 = new Virtualmachine(ram:2,cpu: 3,storageSpace: 30,
                     vcenter:vcenter,
                     account:account,
