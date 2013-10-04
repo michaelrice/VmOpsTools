@@ -8,8 +8,8 @@ class Virtualmachine extends Device {
     int ram
     int cpu
     int storageSpace
-    static belongsTo = [hostsystem:Hostsystem]
-    
+    static belongsTo = [vcenter:Vcenter, hostsystem:Hostsystem]
+
     static constraints = {
     }
 }

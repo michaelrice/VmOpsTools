@@ -11,15 +11,18 @@ class VcenterService {
             // Strange.. how are there no vcenters?
             throw new DomainObjectNotFoundException(Vcenter,0)
         }
-        def retMap = [:]
+        def retList = []
+        def tmpMap = [:]
         vcenters.each { vcenter ->
-            retMap.put("name",vcenter.name)
-            retMap.put("ip",vcenter.ip)
-            retMap.put("hostname",vcenter.hostName)
-            retMap.put("uuid",vcenter.uuid)
-            retMap.put("dateCreated",vcenter.dateCreated)
+            tmpMap.put("name",vcenter.name)
+            tmpMap.put("ip",vcenter.ip)
+            tmpMap.put("hostname",vcenter.hostName)
+            tmpMap.put("uuid",vcenter.uuid)
+            tmpMap.put("dateCreated",vcenter.dateCreated)
+            retList.add(tmpMap)
+            tmpMap = [:]
         }
-        retMap
+        retList
     }
 
     def getVcenterByDeviceNumber(String deviceId) {

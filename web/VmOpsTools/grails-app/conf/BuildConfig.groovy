@@ -53,6 +53,7 @@ grails.project.dependency.resolution = {
         compile ":jquery-ui:1.8.24"
         compile ":famfamfam:1.0.1"
         compile ":jaxrs:0.6"
+        compile ":swagger4jaxrs:0.1"
 
         build ":tomcat:$grailsVersion"
 
