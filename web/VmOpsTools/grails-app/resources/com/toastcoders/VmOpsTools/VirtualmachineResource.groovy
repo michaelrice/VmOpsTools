@@ -25,18 +25,6 @@ class VirtualmachineResource {
 
     def virtualmachineResourceService
 
-    @PUT
-    @ApiOperation(value="Update Virtualmachine",notes="This will update a Virtualmachine")
-    Response update(Virtualmachine dto) {
-        ok virtualmachineResourceService.update(dto)
-    }
-
-    @DELETE
-    @ApiOperation(value="Delete Virtualmachine",notes="This will delete a Virtualmachine")
-    void delete() {
-        virtualmachineResourceService.delete(id)
-    }
-
     @POST
     @ApiOperation(value="Create",notes="Create new Virtualmachine object")
     Response create(Virtualmachine dto) {
@@ -52,8 +40,22 @@ class VirtualmachineResource {
     @GET
     @Path('/{id}')
     @ApiOperation(value="Get",notes="Get a Virtualmachine object")
-    VirtualmachineResource getResource(@PathParam('id') Long id) {
+    Response getResource(@PathParam('id') Long id) {
         ok virtualmachineResourceService.read(id)
+    }
+
+    @PUT
+    @Path('/{id}')
+    @ApiOperation(value="Update Virtualmachine",notes="This will update a Virtualmachine")
+    Response update(Virtualmachine dto) {
+        ok virtualmachineResourceService.update(dto)
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @ApiOperation(value="Delete Virtualmachine",notes="This will delete a Virtualmachine")
+    void delete() {
+        virtualmachineResourceService.delete(id)
     }
 }
 
