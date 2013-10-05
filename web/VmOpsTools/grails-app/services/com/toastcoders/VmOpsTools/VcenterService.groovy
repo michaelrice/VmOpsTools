@@ -1,59 +1,50 @@
 package com.toastcoders.VmOpsTools
 
+import org.codehaus.groovy.grails.exceptions.GrailsDomainException
 import org.grails.jaxrs.provider.DomainObjectNotFoundException
 
 class VcenterService {
 
     def getAllVcenters() {
+        return Vcenter.findAll()
+    }
 
-        def vcenters = Vcenter.findAll()
-        if(!vcenters) {
-            // Strange.. how are there no vcenters?
-            throw new DomainObjectNotFoundException(Vcenter,0)
-        }
-        def retList = []
-        def tmpMap = [:]
-        vcenters.each { vcenter ->
-            tmpMap.put("name",vcenter.name)
-            tmpMap.put("ip",vcenter.ip)
-            tmpMap.put("hostname",vcenter.hostName)
-            tmpMap.put("uuid",vcenter.uuid)
-            tmpMap.put("dateCreated",vcenter.dateCreated)
-            retList.add(tmpMap)
-            tmpMap = [:]
-        }
-        retList
+    def create(Vcenter vc) {
+        vc.save(flush: true)
     }
 
     def getVcenterByDeviceNumber(String deviceId) {
         deviceId = deviceId as int
         def device = Device.findById(deviceId)
         if(!device) {
-            throw new DomainObjectNotFoundException(Device, deviceId)
+            throw new DomainObjectNotFoundException(Device.class, deviceId)
         }
-        def retMap = [:]
         def vcenter
         // check if this is a hostsystem, if so no need to look further
         if(device instanceof com.toastcoders.VmOpsTools.Hostsystem) {
-            vcenter = device.vcenter
-            retMap.put("name",vcenter.name)
-            retMap.put("ip",vcenter.ip)
-            retMap.put("hostname",vcenter.hostName)
-            retMap.put("uuid",vcenter.uuid)
-            retMap.put("dateCreated",vcenter.dateCreated)
-            return retMap
+            return device.vcenter
         }
         // check if a vm, if so grab the host then the vcenter
         if(device instanceof com.toastcoders.VmOpsTools.Virtualmachine) {
-            vcenter = device.hostsystem.vcenter
-            retMap.put("name",vcenter.name)
-            retMap.put("ip",vcenter.ip)
-            retMap.put("hostname",vcenter.hostName)
-            retMap.put("uuid",vcenter.uuid)
-            retMap.put("dateCreated",vcenter.dateCreated)
-            return retMap
+            return device.hostsystem.vcenter
         }
         // need a Hostsystem or a Virtualmachine to find a vcenter
-        throw new DomainObjectNotFoundException(Vcenter,0)
+        throw new DomainObjectNotFoundException(Vcenter.class,0)
+    }
+
+    def update(Vcenter vc) {
+        def obj = Vcenter.get(vc.id)
+        if (!obj) {
+            throw new DomainObjectNotFoundException(Vcenter.class, vc.id)
+        }
+        obj.properties = dto.properties
+        obj
+    }
+
+    void delete(def id) {
+        def obj = Vcenter.get(id)
+        if(obj){
+            obj.delete()
+        }
     }
 }
