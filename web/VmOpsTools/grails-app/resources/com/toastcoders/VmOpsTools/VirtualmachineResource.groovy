@@ -3,6 +3,10 @@ package com.toastcoders.VmOpsTools
 import com.wordnik.swagger.annotations.Api
 import com.wordnik.swagger.annotations.ApiOperation
 
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
+
 import static org.grails.jaxrs.response.Responses.*
 
 import javax.ws.rs.Consumes
@@ -14,24 +18,16 @@ import javax.ws.rs.core.Response
 
 import org.grails.jaxrs.provider.DomainObjectNotFoundException
 
-@Api(value="",description="Virtualmachine Object Resource")
+@Api(value="/virtualmachine",description="Virtualmachine Object Resource")
 @Consumes(['application/json'])
 @Produces(['application/json'])
 class VirtualmachineResource {
 
     def virtualmachineResourceService
-    def id
-
-    @GET
-    @ApiOperation(value="Get",notes="Get a Virtualmachine object")
-    Response read() {
-        ok virtualmachineResourceService.read(id)
-    }
 
     @PUT
     @ApiOperation(value="Update Virtualmachine",notes="This will update a Virtualmachine")
     Response update(Virtualmachine dto) {
-        dto.id = id
         ok virtualmachineResourceService.update(dto)
     }
 
@@ -41,5 +37,23 @@ class VirtualmachineResource {
         virtualmachineResourceService.delete(id)
     }
 
+    @POST
+    @ApiOperation(value="Create",notes="Create new Virtualmachine object")
+    Response create(Virtualmachine dto) {
+        created virtualmachineResourceService.create(dto)
+    }
+
+    @GET
+    @ApiOperation(value="List All",notes="List all Virtualmachine objects")
+    Response readAll() {
+        ok virtualmachineResourceService.readAll()
+    }
+
+    @GET
+    @Path('/{id}')
+    @ApiOperation(value="Get",notes="Get a Virtualmachine object")
+    VirtualmachineResource getResource(@PathParam('id') Long id) {
+        ok virtualmachineResourceService.read(id)
+    }
 }
 
