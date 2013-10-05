@@ -15,8 +15,8 @@ import javax.ws.rs.core.Response
 import org.grails.jaxrs.provider.DomainObjectNotFoundException
 
 @Api(value="",description="Virtualmachine Object Resource")
-@Consumes(['application/xml','application/json'])
-@Produces(['application/xml','application/json'])
+@Consumes(['application/json'])
+@Produces(['application/json'])
 class VirtualmachineResource {
 
     def virtualmachineResourceService
