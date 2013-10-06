@@ -1,6 +1,5 @@
 package com.toastcoders.VmOpsTools.vmware
 
-import com.vmware.vim25.*
 import com.vmware.vim25.mo.*
 
 import com.toastcoders.VmOpsTools.Device
@@ -64,7 +63,7 @@ class Client {
         String vcpass = grailsApplication.config.vcenter.admin_pass
         setSi(new ServiceInstance(new URL("https://${vcenter.ip.toString()}/sdk"), vcuser, vcpass, true))
         log.trace("Created ServiceInstance to vCenter ${vcenter.ip.toString()} for ${deviceId}")
-        setRootFolder(getSi().getRootFolder())
+        setRootFolder(getServiceInstance().getRootFolder())
         log.trace("Set RootFolder for ${deviceId}")
     }
 
@@ -72,11 +71,11 @@ class Client {
         // connect to the vcenter using provided username and password and return service instance
         setSi(new ServiceInstance(new URL("https://${vcip}/sdk"), username, password, true))
         log.trace("Created ServiceInstance to vCenter ${vcip}")
-        setRootFolder(getSi().getRootFolder())
+        setRootFolder(getServiceInstance().getRootFolder())
         log.trace("Set RootFolder")
     }
 
-    ServiceInstance getSi() {
+    ServiceInstance getServiceInstance() {
         return si
     }
 
@@ -90,5 +89,13 @@ class Client {
 
     private void setRootFolder(Folder rootFolder) {
         this.rootFolder = rootFolder
+    }
+
+    public VirtualMachine getVmByUuid(String uuid) {
+        return si.getSearchIndex().findByUuid(null,uuid,true) as VirtualMachine
+    }
+
+    public HostSystem getHostSystemByUuid(String uuid) {
+        return si.getSearchIndex().findByUuid(null,uuid,false) as HostSystem
     }
 }

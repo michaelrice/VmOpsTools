@@ -1,7 +1,5 @@
 package com.toastcoders.VmOpsTools
 
-import com.toastcoders.VmOpsTools.Vcenter
-import com.vmware.vim25.*
 import com.vmware.vim25.mo.*
 
 import com.toastcoders.VmOpsTools.vmware.Client
@@ -18,7 +16,7 @@ class VcenterActionsService {
      */
     def getVcenterTime(def deviceId) {
         Client vsclient = new Client(deviceId)
-        ServiceInstance si = vsclient.getSi()
+        ServiceInstance si = vsclient.getServiceInstance()
         return ["current_time":si.currentTime().time.toString()]
     }
 
@@ -36,7 +34,7 @@ class VcenterActionsService {
         }
         String vcip = vcenter.ip
         Client vsclient = new Client(vcuser,vcpass,vcip)
-        LicenseManager lm = vsclient.getSi().getLicenseManager()
+        LicenseManager lm = vsclient.getServiceInstance().getLicenseManager()
         def licenses = lm.getLicenses()
         def retList = []
         def retMap = [:]
@@ -112,7 +110,7 @@ class VcenterActionsService {
         if(!(device instanceof com.toastcoders.VmOpsTools.Virtualmachine)) {
             // what ever it is, its not a vm. need to bail here.
         }
-        VirtualMachine vm = vsclient.si.getSearchIndex().findByUuid(null,device.uuid,true)
+        VirtualMachine vm = vsclient.serviceInstance.getSearchIndex().findByUuid(null,device.uuid,true)
         return vm
     }
 }
