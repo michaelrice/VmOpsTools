@@ -1,4 +1,4 @@
-package com.toastcoders.VmOpsTools.vmware.exceptions
+package com.toastcoders.VmOpsTools.exceptions
 
 /**
  * Created with IntelliJ IDEA.

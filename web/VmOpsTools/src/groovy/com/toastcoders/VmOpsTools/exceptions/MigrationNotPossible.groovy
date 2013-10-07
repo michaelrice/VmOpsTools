@@ -1,4 +1,4 @@
-package com.toastcoders.VmOpsTools.vmware.exceptions
+package com.toastcoders.VmOpsTools.exceptions
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,9 +10,9 @@ package com.toastcoders.VmOpsTools.vmware.exceptions
  * Time: 12:19 AM
  * Licenses: MIT http://opensource.org/licenses/MIT
  */
-class MigrationNotPossibleException {
+class MigrationNotPossible {
 
-    MigrationNotPossibleException(String reason) {
+    MigrationNotPossible(String reason) {
         super("Virtualmachine Migration not possible: ${reason}")
     }
 }

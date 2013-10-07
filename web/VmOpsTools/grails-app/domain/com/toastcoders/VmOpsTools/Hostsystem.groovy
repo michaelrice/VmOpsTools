@@ -7,6 +7,7 @@ class Hostsystem extends Device {
     int ram
     int cpu
     int storageSpace
+    String os
     static belongsTo = [vcenter:Vcenter]
     static constraints = {
     }

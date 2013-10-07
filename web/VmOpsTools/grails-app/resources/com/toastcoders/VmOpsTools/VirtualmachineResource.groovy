@@ -63,5 +63,12 @@ class VirtualmachineResource {
     void delete(@ApiParam(name="id",value="Device id of a Virtualmachine to delete.",required=true) @PathParam('id') Long id) {
         virtualmachineResourceService.delete(id)
     }
+
+    @POST
+    @Path("/{id}/migrate/{hostId}")
+    @ApiOperation(value="Migrate",notes="Migrate Virtualmachine to a new HostSystem. Uses vMotion. vMotion rules apply.")
+    Response migrate(@ApiParam() @PathParam('id') Long id, @PathParam('hostId') Long hostId) {
+        ok virtualmachineResourceService.migrate(id,hostId)
+    }
 }
 
