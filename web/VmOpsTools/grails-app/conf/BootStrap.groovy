@@ -38,6 +38,7 @@ class BootStrap {
                     name: "1000-hyp1.home.lab",
                     uuid: generateUuid(),
                     ip: "10.12.254.30",
+                    os: "VMware ESXi 5.0.0 build-623860",
                     hostName: "hyp1.home.lab").save(flush: true)
             def vm1 = Virtualmachine.findAll() ?: new Virtualmachine(ram:2,cpu: 1,storageSpace: 20,
                     vcenter:vcenter,
