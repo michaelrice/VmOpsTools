@@ -61,18 +61,30 @@ class Client {
         // gives us access to the stanza in Config.groovy for the vcenter admin user and password
         String vcuser = grailsApplication.config.vcenter.admin_user
         String vcpass = grailsApplication.config.vcenter.admin_pass
-        setSi(new ServiceInstance(new URL("https://${vcenter.ip.toString()}/sdk"), vcuser, vcpass, true))
-        log.trace("Created ServiceInstance to vCenter ${vcenter.ip.toString()} for ${deviceId}")
-        setRootFolder(getServiceInstance().getRootFolder())
-        log.trace("Set RootFolder for ${deviceId}")
+        try {
+            setSi(new ServiceInstance(new URL("https://${vcenter.ip.toString()}/sdk"), vcuser, vcpass, true))
+            log.trace("Created ServiceInstance to vCenter ${vcenter.ip.toString()} for ${deviceId}")
+            setRootFolder(getServiceInstance().getRootFolder())
+            log.trace("Set RootFolder for ${deviceId}")
+        }
+        catch(java.net.ConnectException ce) {
+            log.trace("Connection error to ${vcenter.ip.toString()}: ${ce.message}")
+            throw new Exception("Unable to connect to vcenter: ${ce.message}")
+        }
     }
 
     public Client(String username, String password, String vcip) {
         // connect to the vcenter using provided username and password and return service instance
-        setSi(new ServiceInstance(new URL("https://${vcip}/sdk"), username, password, true))
-        log.trace("Created ServiceInstance to vCenter ${vcip}")
-        setRootFolder(getServiceInstance().getRootFolder())
-        log.trace("Set RootFolder")
+        try {
+            setSi(new ServiceInstance(new URL("https://${vcip}/sdk"), username, password, true))
+            log.trace("Created ServiceInstance to vCenter ${vcip}")
+            setRootFolder(getServiceInstance().getRootFolder())
+            log.trace("Set RootFolder")
+        }
+        catch(java.net.ConnectException ce) {
+            log.trace("Connection error to ${vcenter.ip.toString()}: ${ce.message}")
+            throw new Exception("Unable to connect to vcenter: ${ce.message}")
+        }
     }
 
     ServiceInstance getServiceInstance() {

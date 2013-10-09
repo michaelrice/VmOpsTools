@@ -37,7 +37,7 @@ class VirtualmachineResource {
 
     @GET
     @ApiOperation(value="List All",notes="List all Virtualmachine objects")
-    @ApiResponses(value = [@ApiResponse(code = 404, message = "Virtualmachines not found")])
+    @ApiResponses(value=[@ApiResponse(code=404, message="Virtualmachines not found")])
     Response readAll() {
         ok virtualmachineResourceService.readAll()
     }
@@ -45,7 +45,7 @@ class VirtualmachineResource {
     @GET
     @Path('/{id}')
     @ApiOperation(value="Get",notes="Get a Virtualmachine object")
-    @ApiResponses(value = [@ApiResponse(code = 404, message = "Virtualmachine not found")])
+    @ApiResponses(value=[@ApiResponse(code=404, message="Virtualmachine not found")])
     Response getResource(@ApiParam(name="id",value="Device id of a Virtualmachine to fetch.",required=true) @PathParam('id') Long id) {
         ok virtualmachineResourceService.read(id)
     }
