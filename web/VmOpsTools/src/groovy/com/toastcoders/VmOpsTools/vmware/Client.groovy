@@ -1,5 +1,6 @@
 package com.toastcoders.VmOpsTools.vmware
 
+import com.toastcoders.VmOpsTools.exceptions.ConnectionException
 import com.vmware.vim25.mo.*
 
 import com.toastcoders.VmOpsTools.Device
@@ -30,6 +31,10 @@ class Client {
     // RootFolder
     private Folder rootFolder
 
+    /**
+     *
+     * @param deviceId
+     */
     public Client(String deviceId) {
         log.trace("Building ${this.class} for ${deviceId}")
         // find the vcenter by deviceid and return a service instance
@@ -68,11 +73,17 @@ class Client {
             log.trace("Set RootFolder for ${deviceId}")
         }
         catch(java.net.ConnectException ce) {
-            log.trace("Connection error to ${vcenter.ip.toString()}: ${ce.message}")
+            log.trace("Connection error to ${vcenter.ip.toString()}: ${ce.message}", ce)
             throw new Exception("Unable to connect to vcenter: ${ce.message}")
         }
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @param vcip
+     */
     public Client(String username, String password, String vcip) {
         // connect to the vcenter using provided username and password and return service instance
         try {
@@ -82,15 +93,23 @@ class Client {
             log.trace("Set RootFolder")
         }
         catch(java.net.ConnectException ce) {
-            log.trace("Connection error to ${vcenter.ip.toString()}: ${ce.message}")
-            throw new Exception("Unable to connect to vcenter: ${ce.message}")
+            log.trace("Connection error to ${vcenter.ip.toString()}: ${ce.message}", ce)
+            throw new ConnectionException("Unable to connect to vcenter: ${ce.message}")
         }
     }
 
+    /**
+     *
+     * @return
+     */
     ServiceInstance getServiceInstance() {
         return si
     }
 
+    /**
+     *
+     * @param si
+     */
     private void setSi(ServiceInstance si) {
         this.si = si
     }
@@ -99,14 +118,44 @@ class Client {
         return rootFolder
     }
 
+    /**
+     *
+     * @param rootFolder
+     */
     private void setRootFolder(Folder rootFolder) {
         this.rootFolder = rootFolder
     }
 
+    /**
+     *
+     * @param uuid
+     * @return
+     */
     public VirtualMachine getVmByUuid(String uuid) {
         return si.getSearchIndex().findByUuid(null,uuid,true) as VirtualMachine
     }
 
+    /**
+     * Method to return a VirtualMachine object given a device id
+     * @param deviceId
+     * @return
+     */
+    public VirtualMachine getVmByDeviceId(String deviceId) {
+        Device device = Device.findById(Long.decode(deviceId))
+        if(!device) {
+            // need to bail here since no device was found
+        }
+        if(!(device instanceof com.toastcoders.VmOpsTools.Virtualmachine)) {
+            // what ever it is, its not a vm. need to bail here.
+        }
+        return getVmByUuid(device.uuid)
+    }
+
+    /**
+     *
+     * @param uuid
+     * @return
+     */
     public HostSystem getHostSystemByUuid(String uuid) {
         return si.getSearchIndex().findByUuid(null,uuid,false) as HostSystem
     }
