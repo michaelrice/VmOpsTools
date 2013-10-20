@@ -47,6 +47,12 @@ grails.project.dependency.resolution = {
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.4"
+
+        build ":tomcat:$grailsVersion"
+
+        runtime ":database-migration:1.1"
+
+        compile ':cache:1.0.0'
         compile ':spring-security-core:1.2.7.3'
         compile ":spring-security-ui:0.2"
         compile ":mail:1.0.1"
@@ -54,11 +60,6 @@ grails.project.dependency.resolution = {
         compile ":famfamfam:1.0.1"
         compile ":jaxrs:0.6"
         compile ":swagger4jaxrs:0.1"
-
-        build ":tomcat:$grailsVersion"
-
-        runtime ":database-migration:1.1"
-
-        compile ':cache:1.0.0'
+        compile ":twitter-bootstrap:3.0.0"
     }
 }
