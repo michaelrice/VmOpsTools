@@ -10,7 +10,7 @@ package com.toastcoders.VmOpsTools.exceptions
  * Time: 12:19 AM
  * Licenses: MIT http://opensource.org/licenses/MIT
  */
-class MigrationNotPossible {
+class MigrationNotPossible extends Exception {
 
     MigrationNotPossible(String reason) {
         super("Virtualmachine Migration not possible: ${reason}")

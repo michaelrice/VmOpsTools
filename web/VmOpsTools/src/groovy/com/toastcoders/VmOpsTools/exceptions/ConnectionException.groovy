@@ -10,7 +10,7 @@ package com.toastcoders.VmOpsTools.exceptions
  * Time: 12:58 AM
  * Licenses: MIT http://opensource.org/licenses/MIT
  */
-class ConnectionException {
+class ConnectionException extends Exception {
     ConnectionException(String msg) {
         super(msg)
     }
