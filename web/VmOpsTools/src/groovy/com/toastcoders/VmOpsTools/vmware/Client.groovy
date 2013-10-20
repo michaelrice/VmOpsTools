@@ -1,7 +1,19 @@
 package com.toastcoders.VmOpsTools.vmware
 
 import com.toastcoders.VmOpsTools.exceptions.ConnectionException
+import com.toastcoders.VmOpsTools.exceptions.VirtualMachineOperationFailed
 import com.toastcoders.VmOpsTools.exceptions.VirtualmachineNotFound
+import com.vmware.vim25.DisallowedOperationOnFailoverHost
+import com.vmware.vim25.FileFault
+import com.vmware.vim25.InsufficientResourcesFault
+import com.vmware.vim25.InvalidPowerState
+import com.vmware.vim25.InvalidState
+import com.vmware.vim25.NotEnoughLicenses
+import com.vmware.vim25.NotSupported
+import com.vmware.vim25.RuntimeFault
+import com.vmware.vim25.TaskInProgress
+import com.vmware.vim25.VirtualMachinePowerState
+import com.vmware.vim25.VmConfigFault
 import com.vmware.vim25.mo.*
 
 import com.toastcoders.VmOpsTools.Device
@@ -161,5 +173,93 @@ class Client {
      */
     public HostSystem getHostSystemByUuid(String uuid) {
         return si.getSearchIndex().findByUuid(null,uuid,false) as HostSystem
+    }
+
+    /**
+     * Reboots a virtual machine given its device number
+     * @param deviceid
+     */
+    public void rebootVirtualMachine(String deviceId) {
+        VirtualMachine vm = getVmByDeviceId(deviceId)
+        vm.rebootGuest()
+    }
+
+    /**
+     * PowerOn a virtual machine given its device number
+     * @param deviceId
+     * @return
+     * @deprecated use {@link this.powerOnVirtualMachineMulti()} instead.
+     */
+    @Deprecated
+    public boolean powerOnVirtualMachine(String deviceId) {
+        VirtualMachine vm = getVmByDeviceId(deviceId)
+        if(vm.getRuntime().powerState == VirtualMachinePowerState.poweredOn) {
+            log.trace("powerOnVirtualMachine: VirtualMachine ${deviceId} already powered on.")
+            return true
+        }
+        try {
+            final task = vm.powerOnVM_Task()
+            if(task.waitForTask() == Task.SUCCESS) {
+                return true
+            }
+        }
+        catch(DisallowedOperationOnFailoverHost e) {
+            log.trace("powerOnVirtualMachine: Host specified is a failover host. Unable to preform requested operation.", e)
+            throw new VirtualMachineOperationFailed("Host specified is a failover host. Unable to preform requested operation. ${e.message}")
+        }
+        catch(FileFault e) {
+            //if there is a problem accessing the virtual machine on the filesystem.
+            log.trace("powerOnVirtualMachine: There was a problem accessing the virtual machine on the filesystem.", e)
+            throw new VirtualMachineOperationFailed("There was a problem accessing the virtual machine on the filesystem. ${e.message}")
+        }
+        catch(InsufficientResourcesFault e) {
+            //if this operation would violate a resource usage policy.
+            log.trace("powerOnVirtualMachine: operation would violate a resource usage policy.",e)
+            throw new VirtualMachineOperationFailed("Operation would violate a resource usage policy. ${e.message}")
+        }
+        catch(InvalidPowerState e) {
+            //if the power state is poweredOn
+            // how the herp & derp did we end up here?
+            log.trace("powerOnVirtualMachine: VirtualMachine ${deviceId} already powered on v2.",e)
+            return true
+        }
+        catch(InvalidState e) {
+            //if the host is in maintenance mode or if the virtual machine's configuration information is not available.
+            log.trace("powerOnVirtualMachine: The host is in maintenance mode or the virtual machine's configuration information is not available. ${e.message}",e)
+            throw new VirtualMachineOperationFailed("The host is in maintenance mode, or virtual machine config info not avaulable. ${e.message}")
+        }
+        catch(NotEnoughLicenses e) {
+            //if there are not enough licenses to power on this virtual machine
+            log.trace("powerOnVirtualMachine: there are not enough licenses to power on this virtual machine. ${e.message}",e)
+            throw new VirtualMachineOperationFailed("There are not enough licenses to power on this virtual machine. ${e.message}")
+        }
+        catch(NotSupported e) {
+            //if the virtual machine is marked as a template.
+            log.trace("powerOnVirtualMachine: the virtual machine is marked as a template.",e)
+            throw new VirtualMachineOperationFailed("This virtual machine is marked as a template.")
+        }
+        catch(RuntimeFault e) {
+            //if any type of runtime fault is thrown that is not covered by the other faults; for example, a communication error.
+            log.trace("powerOnVirtualMachine: runtime fault was thrown that is not covered by the other faults. ${e.message}",e)
+            throw new VirtualMachineOperationFailed("runtime fault was thrown that is not covered by the other faults. ${e.message}")
+        }
+        catch(TaskInProgress e) {
+            //if the virtual machine is busy.
+            log.trace("powerOnVirtualMachine: virtual machine is busy. Unable to preform request task. ${e.message}",e)
+            throw new VirtualMachineOperationFailed("virtual machine is busy. Unable to preform request task. ${e.message}")
+        }
+        catch(VmConfigFault e) {
+            //if a configuration issue prevents the power-on. Typically, a more specific fault, such as UnsupportedVmxLocation, is thrown
+            log.trace("powerOnVirtualMachine: A configuration issue is preventing the power-on operation. ${e.message}",e)
+            throw new VirtualMachineOperationFailed("A configuration issue is preventing the power-on operation. ${e.message}")
+        }
+        false
+    }
+
+    /**
+     *
+     */
+    public void powerOnVirtualMachineMulti() {
+
     }
 }
