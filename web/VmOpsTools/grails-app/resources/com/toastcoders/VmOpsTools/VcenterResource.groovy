@@ -1,6 +1,7 @@
 package com.toastcoders.VmOpsTools
 
 import javax.ws.rs.Consumes
+import javax.ws.rs.DELETE
 import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.PUT
@@ -17,6 +18,7 @@ import com.wordnik.swagger.annotations.*
 @Produces('application/json')
 @Consumes('application/json')
 class VcenterResource {
+
     def vcenterService
 
     @GET
@@ -34,7 +36,7 @@ class VcenterResource {
     @GET
     @ApiOperation(value="Get vCenter for a given device",notes="This will return a vcenter.")
     @Path('/device/{deviceId}')
-    Response getVcenterByDevice(@ApiParam(value="DeviceID of a Hostsystem or Virtualmachine to get the vCenter its in.",required=true)
+    Response getVcenterByDevice(@ApiParam(value="DeviceID of a Hostsystem or Virtualmachine to get the vCenter it is in.",required=true)
                                 @PathParam("deviceId") String deviceId) {
         ok vcenterService.getVcenterByDeviceNumber(deviceId)
     }
@@ -45,4 +47,10 @@ class VcenterResource {
         created vcenterService.createVcenter(vcenter)
     }
 
+    @DELETE
+    @ApiOperation(value="Delete Vcenter",notes="This will delete a vcenter from the database. Use with caution.")
+    @Path("/{deviceId}")
+    Response deleteVcenter(@ApiParam(name="deviceId", value="Device Number of the vCenter", required=true) @PathParam("deviceId") Long deviceId) {
+        ok vcenterService.delete(deviceId)
+    }
 }
