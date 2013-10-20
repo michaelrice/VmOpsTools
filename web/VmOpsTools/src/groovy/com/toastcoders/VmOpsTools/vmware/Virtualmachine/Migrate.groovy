@@ -20,25 +20,16 @@ import org.apache.log4j.Logger
  * Time: 7:30 PM
  * Licenses: MIT http://opensource.org/licenses/MIT
  */
-class Migrate extends Client {
+class Migrate {
 
     private Logger log = Logger.getLogger(getClass().name)
+    private Client client
     /**
      *
      * @param deviceId
      */
-    Migrate(String deviceId) {
-        super(deviceId)
-    }
-
-    /**
-     *
-     * @param username
-     * @param password
-     * @param vcip
-     */
-    Migrate(String username, String password, String vcip) {
-        super(username, password, vcip)
+    Migrate(Client client) {
+        this.client = client
     }
 
     /**
@@ -50,12 +41,12 @@ class Migrate extends Client {
      */
     public Boolean migrate(String vmuuid, String newHostUuid) throws MigrationNotPossible {
         log.trace("Migration job request. Move ${vmuuid} to ${newHostUuid}")
-        VirtualMachine vm = getVmByUuid(vmuuid) as VirtualMachine
-        HostSystem newHost  = getHostSystemByUuid(newHostUuid) as HostSystem
+        VirtualMachine vm = client.getVmByUuid(vmuuid) as VirtualMachine
+        HostSystem newHost  = client.getHostSystemByUuid(newHostUuid) as HostSystem
         HostSystem[] newHostArray = [newHost]
         ComputeResource cr = newHost.getParent() as ComputeResource
         String[] checks = ["cpu", "software"]
-        HostVMotionCompatibility[] vmcs = si.queryVMotionCompatibility(vm,newHostArray,checks)
+        HostVMotionCompatibility[] vmcs = client.serviceInstance.queryVMotionCompatibility(vm,newHostArray,checks)
         String[] comps = vmcs[0].getCompatibility()
         if(checks.length != comps.length) {
             log.trace("CPU or Software not compatible. Unable to complete migration request.")

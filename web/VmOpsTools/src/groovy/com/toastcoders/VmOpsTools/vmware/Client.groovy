@@ -1,6 +1,7 @@
 package com.toastcoders.VmOpsTools.vmware
 
 import com.toastcoders.VmOpsTools.exceptions.ConnectionException
+import com.toastcoders.VmOpsTools.exceptions.VirtualmachineNotFound
 import com.vmware.vim25.mo.*
 
 import com.toastcoders.VmOpsTools.Device
@@ -140,13 +141,15 @@ class Client {
      * @param deviceId
      * @return
      */
-    public VirtualMachine getVmByDeviceId(String deviceId) {
+    public VirtualMachine getVmByDeviceId(String deviceId) throws VirtualmachineNotFound {
         Device device = Device.findById(Long.decode(deviceId))
         if(!device) {
             // need to bail here since no device was found
+            log.trace("Unable to locate Virtualmachine in database using device: ${deviceId}")
+            throw new VirtualmachineNotFound("Unable to locate Virtualmachine in database.")
         }
         if(!(device instanceof com.toastcoders.VmOpsTools.Virtualmachine)) {
-            // what ever it is, its not a vm. need to bail here.
+            //what ever it is, its not a vm. need to bail here.
         }
         return getVmByUuid(device.uuid)
     }
