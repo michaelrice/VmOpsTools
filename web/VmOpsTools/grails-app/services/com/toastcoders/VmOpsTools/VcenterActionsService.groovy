@@ -1,8 +1,10 @@
 package com.toastcoders.VmOpsTools
 
 import com.vmware.vim25.mo.*
+import com.vmware.vim25.*
 
 import com.toastcoders.VmOpsTools.vmware.Client
+import com.vmware.vim25.mo.util.PropertyCollectorUtil
 import org.grails.jaxrs.provider.DomainObjectNotFoundException
 
 class VcenterActionsService {
@@ -16,8 +18,7 @@ class VcenterActionsService {
      */
     def getVcenterTime(def deviceId) {
         Client vsclient = new Client(deviceId)
-        ServiceInstance si = vsclient.getServiceInstance()
-        return ["current_time":si.currentTime().time.toString()]
+        return ["current_time":vsclient.serviceInstance.currentTime().time.toString()]
     }
 
     /**
@@ -77,40 +78,53 @@ class VcenterActionsService {
     }
 
     /**
-     * Reboots a virtual machine given its device number
-     * @param deviceid
-     */
-    def rebootVirtualMachine(def deviceid) {
-        VirtualMachine vm = getVmByDeviceId(deviceid)
-        vm.rebootGuest()
-    }
-
-    /**
-     * PowerOn a virtual machine given its device number
+     * uses property selector to get uuid and name of all VirtualMachines in a vcenter.
+     *  returns a list of maps {name: "vmname", "uuid": vmuuid}
      * @param deviceId
      * @return
      */
-    def powerOnVirtualMachine(def deviceId) {
-        VirtualMachine vm = getVmByDeviceId(deviceId)
-        final task = vm.powerOnVM_Task(vm.getRuntime().getHost() as HostSystem)
-        task.waitForTask()
-    }
+    def getVirtualMachines(String deviceId) {
+        String vcuser = grailsApplication.config.vcenter.admin_user
+        String vcpass = grailsApplication.config.vcenter.admin_pass
+        Vcenter vcenter = Vcenter.findById(Long.decode(deviceId))
+        if(!vcenter) {
+            throw new DomainObjectNotFoundException(Vcenter,deviceId)
+        }
+        String vcip = vcenter.ip
+        Client vsclient = new Client(vcuser,vcpass,vcip)
+        //set the properties of the vm we want to fetch
+        String[] vmProperties = ["name", "config.uuid"]
+        ManagedObjectReference rootFolderMOR = vsclient.rootFolder.getMOR()
+        ManagedObjectReference pcMOR = vsclient.serviceInstance.getPropertyCollector().getMOR()
+        PropertySpec vmSpec = new PropertySpec()
+        vmSpec.setAll(false)
+        vmSpec.setType("VirtualMachine")
+        vmSpec.setPathSet(vmProperties)
+        ObjectSpec oSpec = new ObjectSpec()
+        oSpec.setObj(rootFolderMOR)
+        oSpec.setSelectSet(PropertyCollectorUtil.buildFullTraversalV4())
 
-    /**
-     * Method to return a VirtualMachine object given a device id
-     * @param deviceId
-     * @return
-     */
-    private VirtualMachine getVmByDeviceId(String deviceId) {
-        Client vsclient = new Client(deviceid)
-        Device device = Device.findById(Long.decode(deviceId))
-        if(!device) {
-            // need to bail here since no device was found
+        PropertyFilterSpec[] pfSpec = new PropertyFilterSpec[1];
+        pfSpec[0] = new PropertyFilterSpec()
+
+        ObjectSpec[] oo = [oSpec]
+        pfSpec[0].setObjectSet(oo)
+        PropertySpec[] pp = [vmSpec]
+        pfSpec[0].setPropSet(pp)
+        def newResult = []
+        def tMap = [:]
+        def result = (List) vsclient.serviceInstance.getServerConnection().getVimService().retrieveProperties(pcMOR, pfSpec)
+        //clean up the result a bit to make it more reader friendly
+        result.each { device ->
+            device.propSet.each { property ->
+                if(property.name == "config.uuid") {
+                    property.name = "uuid"
+                }
+                tMap.putAt("${property.name}" , "${property.val}")
+            }
+            newResult.add(tMap)
+            tMap = [:]
         }
-        if(!(device instanceof com.toastcoders.VmOpsTools.Virtualmachine)) {
-            // what ever it is, its not a vm. need to bail here.
-        }
-        VirtualMachine vm = vsclient.serviceInstance.getSearchIndex().findByUuid(null,device.uuid,true)
-        return vm
+        return newResult
     }
 }

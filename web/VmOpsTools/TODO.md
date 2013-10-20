@@ -21,9 +21,9 @@ Vcenter Actions:
 + ~~List Datacenters (from VC)~~
   + UI
   + API
-+ List VirtualMachines (from VC)
++ ~~List VirtualMachines (from VC)~~
   + UI
-  + API
+  + ~~API~~
 + List HostSystems (from VC)
   + UI
   + API
@@ -33,7 +33,7 @@ Vcenter Actions:
 + Remove HostSystem from vcenter (VC only. this should NOT remove hostsystem db to vcenter assoication)
   + UI
   + API
-
++ Split CRUD operations for DB from vCenter Server operations
 
 HostSystem Vcenter:
 -------------------

@@ -20,11 +20,19 @@ import com.wordnik.swagger.annotations.*
 class VcenterResource {
 
     def vcenterService
+    def vcenterActionsService
 
     @GET
     @ApiOperation(value="Get All Vcenters",notes="This will return a list of all vCenters.")
     Response getAllVcenters() {
         ok vcenterService.getAllVcenters()
+    }
+
+    @GET
+    @ApiOperation(value="Get All VirtualMachines From vCenter", notes="This will return a list of VirtualMachine names, and UUIDs directly from vCenter")
+    @Path("/{id}/virtualmachines")
+    Response getAllVirtualMachinesFromVcenter(@ApiParam(value="vCenter Id from DB", required=true)@PathParam("id") Long id) {
+        ok vcenterActionsService.getVirtualMachines(id as String)
     }
 
     @PUT
