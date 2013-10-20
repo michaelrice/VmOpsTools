@@ -34,14 +34,14 @@ class Migrate {
 
     /**
      * migrate virtualmachine from its current host to another host.
-     * @param vmuuid UUID of Virtualmachine device you want to move
+     * @param vmUuid UUID of Virtualmachine device you want to move
      * @param newHostUuid UUID of the new Hostsystem you want to move the virtualmachine to
      * @return Boolean Returns true if the migration was a success
      * @throws MigrationNotPossible Thrown if the task was anything other than SUCCESS
      */
-    public Boolean migrate(String vmuuid, String newHostUuid) throws MigrationNotPossible {
-        log.trace("Migration job request. Move ${vmuuid} to ${newHostUuid}")
-        VirtualMachine vm = client.getVmByUuid(vmuuid) as VirtualMachine
+    public Boolean migrate(String vmUuid, String newHostUuid) throws MigrationNotPossible {
+        log.trace("Migration job request. Move ${vmUuid} to ${newHostUuid}")
+        VirtualMachine vm = client.getVmByUuid(vmUuid) as VirtualMachine
         HostSystem newHost  = client.getHostSystemByUuid(newHostUuid) as HostSystem
         HostSystem[] newHostArray = [newHost]
         ComputeResource cr = newHost.getParent() as ComputeResource
