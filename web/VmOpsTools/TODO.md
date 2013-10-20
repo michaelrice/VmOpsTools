@@ -4,124 +4,124 @@ webTool TODO list:
 Vcenter Actions:
 ----------------
 + ~~Create (DB)~~
-..+ UI
-..+ ~~API~~
+  + UI
+  + ~~API~~
 + ~~Read (List & List All from DB)~~
-..+ UI
-..+ ~~API~~
+  + UI
+  + ~~API~~
 + ~~Update (Edit in DB)~~
-..+ UI
-..+ ~~API~~
+  + UI
+  + ~~API~~
 + ~~Delete (from DB, this will also remove all child things in DB like VM and Hostsystems and storage)~~
-..+ UI
-..+ ~~API~~
+  + UI
+  + ~~API~~
 + ~~Get time (ping test from VC)~~
-..+ UI
-..+ API
+  + UI
+  + API
 + ~~List Datacenters (from VC)~~
-..+ UI
-..+ API
+  + UI
+  + API
 + List VirtualMachines (from VC)
-..+ UI
-..+ API
+  + UI
+  + API
 + List HostSystems (from VC)
-..+ UI
-..+ API
+  + UI
+  + API
 + Add HostSystem to vcenter (VC)
-..+ UI
-..+ API
+  + UI
+  + API
 + Remove HostSystem from vcenter (VC only. this should NOT remove hostsystem db to vcenter assoication)
-..+ UI
-..+ API
+  + UI
+  + API
 
 
 HostSystem Vcenter:
 -------------------
 + List virtual machines on host
-..+ UI
-..+ API
+  + UI
+  + API
 + Put host in maint mode
-..+ UI
-..+ API
+  + UI
+  + API
 + Power on host
-..+ UI
-..+ API
+  + UI
+  + API
 + power off host
-..+ UI
-..+ API
+  + UI
+  + API
 + remove host from vcenter
-..+ UI
-..+ API
+  + UI
+  + API
 + get host info (need to define this)
-..+ UI
-..+ API
+  + UI
+  + API
 
 
 VirtualMachine Vcenter:
 -----------------------
 + ~~power on~~
-..+ UI
-..+ API
+  + UI
+  + API
 + power off
-..+ UI
-..+ API
+  + UI
+  + API
 + ~~reboot~~
-..+ UI
-..+ API
+  + UI
+  + API
 + suspend
-..+ UI
-..+ API
+  + UI
+  + API
 + CreateSnapshot
-..+ UI
-..+ API
+  + UI
+  + API
 + DeleteSnapshot
-..+ UI
-..+ API
+  + UI
+  + API
 + RevertSnapshot
-..+ UI
-..+ API
+  + UI
+  + API
 + ~~Migrate~~
-..+ UI
-..+ API
+  + UI
+  + API
 + rename
-..+ UI
-..+ API
+  + UI
+  + API
 + get info (need to define this)
-..+ UI
-..+ API
+  + UI
+  + API
 + createNew
-..+ UI
-..+ API
+  + UI
+  + API
 + createClone
-..+ UI
-..+ API
+  + UI
+  + API
 + convertToTemplate
-..+ UI
-..+ API
+  + UI
+  + API
 + convertFromTemplateToVirtualMachine
-..+ UI
-..+ API
+  + UI
+  + API
 + export
-..+ UI
-..+ API
+  + UI
+  + API
 + changeCpu
-..+ UI
-..+ API
+  + UI
+  + API
 + changeRam
-..+ UI
-..+ API
+  + UI
+  + API
 + addDisk
-..+ UI
-..+ API
+  + UI
+  + API
 + removeDisk
-..+ UI
-..+ API
+  + UI
+  + API
 + addNic
-..+ UI
-..+ API
+  + UI
+  + API
 + disconnectNetwork
-..+ UI
-..+ API
+  + UI
+  + API
 + reconnectNetwork
-..+ UI
-..+ API
+  + UI
+  + API
