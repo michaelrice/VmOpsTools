@@ -74,9 +74,9 @@ environments {
 log4j = {
     // Example of changing the log pattern for the default console appender:
     //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+    }
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -89,6 +89,10 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+
+    debug 'com.toastcoders',
+          "grails.app.controllers",
+          'grails.app'
 }
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.toastcoders.VmOpsTools.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.toastcoders.VmOpsTools.UserRole'
@@ -97,4 +101,16 @@ grails.plugins.springsecurity.authority.className = 'com.toastcoders.VmOpsTools.
 vcenter {
     admin_user = "home\\vcauto"
     admin_pass = "2haxucUdaqe5"
+}
+
+'swagger4jaxrs' {
+    resourcePackage = "com.toastcoders.VmOpsTools"
+    version = "1.0"
+    basePath = "${grailsApplication.config.grails.serverURL}/api"
+    title = "VmOpsTools"
+    description = "Tools to make your life as a Vmware Admin easier"
+    contact = "michael@michaelrice.org"
+    license = "MIT"
+    licenseUrl = "http://opensource.org/licenses/MIT"
+    scan = true
 }

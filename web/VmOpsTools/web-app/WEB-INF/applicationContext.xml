@@ -30,15 +30,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<value>utf-8</value>
 		</property>
 	</bean>
-    <bean id="swaggerConfig" class="com.wordnik.swagger.jaxrs.config.BeanConfig">
-        <property name="resourcePackage" value="com.toastcoders.VmOpsTools"/>
-        <property name="version" value="1.0"/>
-        <property name="basePath" value="http://localhost:8080/VmOpsTools/api"/>
-        <property name="title" value="VmOpsTools"/>
-        <property name="description" value="Your Mom like this"/>
-        <property name="contact" value="michael@michaelrice.org"/>
-        <property name="license" value="MIT"/>
-        <property name="licenseUrl" value="http://opensource.org/licenses/MIT"/>
-        <property name="scan" value="true"/>
-    </bean>
 </beans>

@@ -1,4 +1,4 @@
-grails.servlet.version = "2.5" // Change depending on target container compliance (2.5 or 3.0)
+grails.servlet.version = "3.0" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
@@ -41,7 +41,7 @@ grails.project.dependency.resolution = {
     plugins {
         runtime ":hibernate:$grailsVersion"
         runtime ":jquery:1.8.0"
-        runtime ":resources:1.1.6"
+        runtime ":resources:1.2"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
@@ -58,8 +58,8 @@ grails.project.dependency.resolution = {
         compile ":mail:1.0.1"
         compile ":jquery-ui:1.8.24"
         compile ":famfamfam:1.0.1"
-        compile ":jaxrs:0.6"
-        compile ":swagger4jaxrs:0.1"
-        compile ":twitter-bootstrap:3.0.0"
+        compile ":jaxrs:0.9"
+        compile ":swagger4jaxrs:0.2"
+        compile ":twitter-bootstrap:3.1.1"
     }
 }
